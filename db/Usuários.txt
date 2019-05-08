@@ -1,0 +1,22 @@
+[
+  {
+    "_rfid": 12458741,
+    "name": "Wesley Ricardo",
+    "section": "Comercial",
+  },
+  {
+    "_rfid": 12458741,
+    "name": "Jonas Vilmar",
+    "section": "Corte e Vinco",
+  },
+  {
+    "_rfid": 15478458,
+    "name": "Alex Figueiredo",
+    "section": "Acabamento Geral",
+  },
+  {
+    "_rfid": 58745214,
+    "name": "Danilo Hillesheim",
+    "section": "Corte e Vinco",
+  },
+]

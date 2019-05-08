@@ -1,0 +1,14 @@
+[
+  {
+    "nome": "Tag",
+  },
+  {
+    "nome": "Cartucho",
+  },
+  {
+    "nome": "Envelope",
+  },
+  {
+    "nome": "Pasta",
+  },
+]

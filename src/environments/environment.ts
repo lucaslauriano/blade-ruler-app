@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebase: {
+    apiKey: 'AIzaSyCH61xDwQVILhMhrjZEcT1YipChLQPzA10',
+    authDomain: 'blade-ruler.firebaseapp.com',
+    databaseURL: 'https://blade-ruler.firebaseio.com',
+    projectId: 'blade-ruler',
+    storageBucket: 'blade-ruler.appspot.com',
+    messagingSenderId: '791717536950'
+  }
 };
 
 /*
