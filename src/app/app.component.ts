@@ -4,10 +4,13 @@ import { Platform, NavController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
+  providers: [BluetoothSerial]
 })
 
 export class AppComponent {
@@ -28,11 +31,6 @@ export class AppComponent {
       icon: 'cut'
     },
     {
-      title: 'Usuários',
-      url: '/users',
-      icon: 'contacts'
-    },
-    {
       title: 'Categorias',
       url: '/categories',
       icon: 'list'
@@ -41,19 +39,24 @@ export class AppComponent {
   ];
 
   constructor(
+    public bluetoothSerial: BluetoothSerial,
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    public afAuth: AngularFireAuth,
+    private afAuth: AngularFireAuth,
+    public router: Router,
     private navigation: NavController
   ) {
+    console.log(this.afAuth);
+    console.log(this.router);
+
     this.initializeApp();
   }
 
   logOut() {
     this.afAuth.auth.signOut().then(() => {
+      this.router.navigate(['/login']);
       location.reload();
-      this.navigate()
 
     })
   }
@@ -64,8 +67,17 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
+
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+      this.bluetoothSerial.subscribeRawData().subscribe(
+        data => {
+          console.log('subscribeRawData', data);
+        },
+        err => {
+          console.log('error subscribeRawData', err);
+        }
+      );
     });
   }
 }

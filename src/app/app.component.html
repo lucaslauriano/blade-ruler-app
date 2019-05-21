@@ -24,6 +24,14 @@
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
+          <ion-menu-toggle auto-hide="false" *ngIf="!afAuth.auth.currentUser">
+            <ion-item [routerLink]="['/login']">
+              <ion-icon slot="start" name="log-out"></ion-icon>
+              <ion-label>
+                Login
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
         </ion-list>
       </ion-content>
     </ion-menu>

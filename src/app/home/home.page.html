@@ -9,7 +9,133 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-header>
+  <ion-item-group>
+    <ion-button (click)="scan()" ion-button>
+      Scan
+      <ion-icon style="font-size:25px" name="search" md="md-search"></ion-icon>
+    </ion-button>
+
+    <ion-button (click)="sendReader()" ion-button>
+      Send Reader
+      <ion-icon name="check" md="md-warning"></ion-icon>
+    </ion-button>
+
+    <ion-button [disabled]="!connected" (click)="isConnected()" ion-button
+      >Id Connected
+      <ion-icon name="warning" md="md-warning"></ion-icon>
+    </ion-button>
+
+    <ion-button [disabled]="!connected" ion-button>
+      <ion-icon
+        disabled
+        style="font-size:25px"
+        *ngIf="showBeep"
+        (click)="toogleBeep(false)"
+        name="volume-mute"
+        md="md-volume-mute"
+      ></ion-icon>
+      <ion-icon
+        style="font-size:25px"
+        *ngIf="!showBeep"
+        (click)="toogleBeep(true)"
+        name="volume-off"
+        md="md-volume-off"
+      ></ion-icon>
+    </ion-button>
+
+    <ion-button
+      [disabled]="!connected"
+      *ngIf="!inventoring"
+      (click)="getInventory()"
+      ion-button
+    >
+      Get Inventory
+      <ion-icon name="play"></ion-icon>
+    </ion-button>
+
+    <ion-button
+      [disabled]="!connected"
+      *ngIf="inventoring"
+      (click)="stop()"
+      ion-button
+    >
+      Stop
+      <ion-icon name="square" md="md-square"></ion-icon>
+    </ion-button>
+
+    <ion-button [disabled]="!connected" (click)="clear()" ion-button>
+      Clear
+      <ion-icon name="trash" md="md-trash"></ion-icon>
+    </ion-button>
+
+    <ion-button *ngIf="connected" (click)="sendDislink()" ion-button>
+      Send Dislink
+      <ion-icon name="close" md="md-close"></ion-icon>
+    </ion-button>
+
+    <ion-button *ngIf="connected" (click)="turnOff()" ion-button>
+      TurnOff
+      <ion-icon name="power" md="md-power"></ion-icon>
+    </ion-button>
+
+    <ion-button (click)="getBatteryLevel()" ion-button>
+      Batery Level
+      <ion-icon name="power" md="md-power"></ion-icon>
+    </ion-button>
+
+    <ion-icon
+      style="font-size:25px; color:#22d022"
+      *ngIf="connected"
+      name="radio-button-on"
+      md="md-radio-button-on"
+    ></ion-icon>
+    <ion-icon
+      style="font-size:25px; color:red"
+      *ngIf="!connected"
+      name="radio-button-on"
+      md="md-radio-button-on"
+    ></ion-icon>
+
+    <ion-icon
+      *ngIf="connected"
+      style="font-size:25px;"
+      name="battery-full"
+      md="md-battery-full"
+      >{{ batteryLevel }}%</ion-icon
+    >
+  </ion-item-group>
+</ion-header>
+
+<ion-content padding>
+  <p>Status:{{ status }}</p>
+
+  <ion-card *ngIf="devices.length">
+    <ion-card-header>
+      Dispositivos encontrados:
+    </ion-card-header>
+
+    <ion-list>
+      <ion-button
+        (click)="handleConnection(item)"
+        *ngFor="let item of devices"
+        ion-item
+      >
+        <ion-icon name="bluetooth" md="md-bluetooth"></ion-icon>
+        {{ item.name }}
+      </ion-button>
+    </ion-list>
+  </ion-card>
+
+  <p (click)="info(item)" *ngFor="let item of tags">
+    {{ item.tag }} -
+    <span *ngIf="item && item.patrimony && item.patrimony.name">{{
+      item.patrimony.name
+    }}</span>
+  </p>
+</ion-content>
+
+<!-- <ion-content>
   <ion-card class="welcome-card">
     <ion-img class="blade-pic" src="/assets/shapes.jpg"></ion-img>
     <ion-card-header>
@@ -25,35 +151,26 @@
       <p></p>
     </ion-card-content>
   </ion-card>
-  <!--  <ion-button>Default</ion-button>
-  <ion-button color="primary">Primary</ion-button>
-  <ion-button color="secondary">Secondary</ion-button>
-  <ion-button color="tertiary">Tertiary</ion-button>
-  <ion-button color="success">Success</ion-button>
-  <ion-button color="warning">Warning</ion-button>
-  <ion-button color="danger">Danger</ion-button>
-  <ion-button color="light">Light</ion-button>
-  <ion-button color="medium">Medium</ion-button>
-  <ion-button color="dark">Dark</ion-button> -->
+
   <ion-list lines="none">
     <ion-list-header>
       <ion-label>Atalhos</ion-label>
     </ion-list-header>
-    <ion-item href="">
+    <ion-item [routerLink]="shortcut.newBlade">
+      <ion-icon slot="start" color="medium" name="barcode"></ion-icon>
+      <ion-label>Incluir Facas</ion-label>
+    </ion-item>
+    <ion-item (click)="identifyBlade()">
       <ion-icon slot="start" color="medium" name="barcode"></ion-icon>
       <ion-label>Identificar Facas</ion-label>
     </ion-item>
-    <ion-item href="">
-      <ion-icon slot="start" color="medium" name="cut"></ion-icon>
-      <ion-label>Facas</ion-label>
-    </ion-item>
-    <ion-item href="">
+    <ion-item [routerLink]="shortcut.newBlade">
       <ion-icon slot="start" color="medium" name="contacts"></ion-icon>
-      <ion-label>Usuarios</ion-label>
+      <ion-label>Localizar</ion-label>
     </ion-item>
-    <ion-item href="">
+    <ion-item [routerLink]="shortcut.newBlade">
       <ion-icon slot="start" color="medium" name="list"></ion-icon>
-      <ion-label>Categorias</ion-label>
+      <ion-label>Inventario</ion-label>
     </ion-item>
   </ion-list>
-</ion-content>
+</ion-content> -->

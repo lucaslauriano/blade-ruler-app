@@ -57,6 +57,11 @@ export class NewBladePage implements OnInit {
     this.get(loading)
   }
 
+  savingTag() {
+    console.log('Serializando');
+
+  }
+
   async saveBlade() {
     const loading = await this.loadingController.create({
       message: 'Salvando...',
@@ -103,6 +108,7 @@ export class NewBladePage implements OnInit {
 
   add(loading) {
     this.bladesService.addBlade(this.blade).then(() => {
+      this.savingTag()
       loading.dismiss();
       this.navigation.navigateBack(this.endpoint);
     });
