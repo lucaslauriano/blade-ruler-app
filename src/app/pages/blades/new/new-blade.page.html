@@ -1,0 +1,62 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/blades"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      {{ pageTitle }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-label position="floating">Código RFID</ion-label>
+      <ion-input required type="text" [(ngModel)]="blade._rfid"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input required type="text" [(ngModel)]="blade.name"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Categoria</ion-label>
+      <ion-input required type="text" [(ngModel)]="blade.categorie"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Montagens</ion-label>
+      <ion-input required type="text" [(ngModel)]="blade.montage"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Formato</ion-label>
+      <ion-input required type="text" [(ngModel)]="blade.shape"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Local de Armazenamento</ion-label>
+      <ion-input
+        required
+        type="text"
+        [(ngModel)]="blade.storageLocation"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-thumbnail slot="start">
+        <ion-img src="/assets/blade_1.jpg"></ion-img>
+      </ion-thumbnail>
+      <ion-label>
+        Imagem
+      </ion-label>
+      <ion-button slot="end" fill="clear" (click)="startUpload(img)">
+        <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
+      </ion-button>
+      <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+    </ion-item>
+
+    <ion-button color="{{ buttonColor }}" (click)="saveBlade()" expand="block">
+      {{ saveButtonTitle }}
+    </ion-button>
+  </ion-card>
+</ion-content>

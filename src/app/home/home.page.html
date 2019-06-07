@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+    <ion-buttons slot="primary">
+      <ion-button color="secondary">
+        <ion-icon class="conected" *ngIf="connected" name="radio-button-on" md="md-radio-button-on">
+        </ion-icon>
+        <ion-icon class="disconected" *ngIf="!connected" name="radio-button-on" md="md-radio-button-on">
+        </ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card class="welcome-card">
+    <ion-img class="blade-pic" src="/assets/shapes.jpg"></ion-img>
+    <ion-card-header>
+      <ion-card-subtitle *ngIf="afAuth.auth.currentUser">
+        Bem Vindo, {{ afAuth.auth.currentUser.displayName }}
+      </ion-card-subtitle>
+      <ion-card-subtitle *ngIf="!afAuth.auth.currentUser">
+        Bem Vindo
+      </ion-card-subtitle>
+      <ion-card-title>
+        Blade Ruler App
+      </ion-card-title>
+    </ion-card-header>
+    
+  </ion-card>
+
+  <ion-list lines="none">
+    <ion-list-header>
+      <ion-label>Atalhos</ion-label>
+    </ion-list-header>
+    <ion-item [routerLink]="shortcut.newBlade">
+      <ion-icon slot="start" color="medium" name="barcode"></ion-icon>
+      <ion-label>Incluir Facas</ion-label>
+    </ion-item>
+    <ion-item (click)="identifyBlade()">
+      <ion-icon slot="start" color="medium" name="barcode"></ion-icon>
+      <ion-label>Identificar Facas</ion-label>
+    </ion-item>
+    <ion-item [routerLink]="shortcut.newBlade">
+      <ion-icon slot="start" color="medium" name="contacts"></ion-icon>
+      <ion-label>Localizar</ion-label>
+    </ion-item>
+    <ion-item [routerLink]="shortcut.newBlade">
+      <ion-icon slot="start" color="medium" name="list"></ion-icon>
+      <ion-label>Inventario</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
