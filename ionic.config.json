@@ -1,7 +1,0 @@
-{
-  "name": "blade-ruler-app",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
-}
