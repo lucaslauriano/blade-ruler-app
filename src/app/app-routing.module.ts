@@ -43,14 +43,12 @@ const routes: Routes = [
     loadChildren: './pages/blades/new/new-blade.module#NewBladePageModule'
   },
   {
-    path: 'users',
-    loadChildren: './pages/users/list/users.module#UsersPageModule'
-  },
-  {
     path: 'new-user',
     loadChildren: './pages/users/new/new-user.module#NewUserPageModule'
   },
-  { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' }
+  { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
+  { path: 'connect', loadChildren: './connect/connect.module#ConnectPageModule' }
+
 ];
 
 @NgModule({
