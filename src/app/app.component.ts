@@ -13,7 +13,8 @@ import { BLE } from '@ionic-native/ble/ngx';
   templateUrl: 'app.component.html',
   providers: [
     BluetoothSerial, 
-    Message
+    Message,
+    BLE
   ],
   inputs: [
     'connected'
@@ -97,14 +98,17 @@ export class AppComponent {
 
   public locateBlade() {
     if (this.connected) {
-      this.ble.scan(this.device, 50000, (data)=> {
-          console.log(data)
-        }, (error) => {
-          console.log(error)
-      });
+        console.log('data');
     } else {
       this.message.notify('Dispositivo não conectado!');
     }
+  }
+
+  public success(data) {
+    console.log(data);
+  }
+  public failure(data) {
+    console.log(data);
   }
 
 }
