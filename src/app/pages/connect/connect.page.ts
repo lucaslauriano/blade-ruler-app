@@ -1,16 +1,10 @@
 
 import { Component, NgZone, ChangeDetectorRef, OnInit } from '@angular/core';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import { Loader } from '../../utils/loader/loader';
+import { Loader } from '../../../utils/loader/loader';
 import { Message } from 'src/utils/message/message';
 import { Platform, NavController, LoadingController } from '@ionic/angular';
-
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { Router } from '@angular/router';
 import { R900Protocol } from 'src/utils/protocol/R900Protocol';
-import { R900Status } from 'src/utils/protocol/R900Status';
 
 
 @Component({
@@ -153,7 +147,7 @@ export class ConnectPage {
                 cb(status);
             },
             err => {
-                this.message.notify('Error on Connecting, restart device!');
+                this.message.notify('Erro ao conectar, reinicie o dispositivo!');
                 console.log('Error on Connecting: ', err);
                 this.setConnection(false);
             }

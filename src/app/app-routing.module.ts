@@ -26,7 +26,7 @@ const routes: Routes = [
       './pages/categories/new/new-categorie.module#NewCategoriePageModule'
   },
   {
-    path: 'identify',
+    path: 'identify/:id',
     loadChildren: './pages/blades/identify/identify.module#IdentifyPageModule'
   },
   {
@@ -47,7 +47,7 @@ const routes: Routes = [
     loadChildren: './pages/users/new/new-user.module#NewUserPageModule'
   },
   { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
-  { path: 'connect', loadChildren: './connect/connect.module#ConnectPageModule' }
+  { path: 'connect', loadChildren: './pages/connect/connect.module#ConnectPageModule' }
 
 ];
 

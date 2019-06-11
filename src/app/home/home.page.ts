@@ -4,7 +4,7 @@ import { Loader } from '../../utils/loader/loader';
 import { Message } from '../../utils/message/message';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { Platform, LoadingController } from '@ionic/angular';
-import { R900Protocol } from '../../utils/protocol/r900Protocol'
+import { R900Protocol } from '../../utils/protocol/R900Protocol_'
 
 @Component({
   selector: 'app-home',

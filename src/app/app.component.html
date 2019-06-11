@@ -21,49 +21,65 @@
 
           <ion-menu-toggle auto-hide="false">
             <ion-item (click)="identifyBlade()">
-              <ion-icon slot="start" name="search"></ion-icon>
+              <ion-icon slot="start" name="barcode"></ion-icon>
               <ion-label>
                 Identificar Faca
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
 
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="locateBlade()">
+              <ion-icon slot="start" name="search"></ion-icon>
+              <ion-label>
+                Localizar
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerDirection]="'root'" [routerLink]="['/blades']">
+              <ion-icon slot="start" name="cut"></ion-icon>
+              <ion-label>
+                Facas
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerDirection]="'root'" [routerLink]="['/categories']">
+              <ion-icon slot="start" name="list"></ion-icon>
+              <ion-label>
+                Categorias
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerDirection]="'root'" [routerLink]="['/connect']">
+              <ion-icon slot="start" name="bluetooth"></ion-icon>
+              <ion-label>
+                Connectar
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+        <!-- 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-            <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+            <ion-item [routerDirection]="'root'" [routerLink]="['/blades']">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
               <ion-label>
                 {{ p.title }}
               </ion-label>
             </ion-item>
-          </ion-menu-toggle>
+          </ion-menu-toggle> 
+        -->
 
           <ion-menu-toggle auto-hide="false" *ngIf="afAuth.auth.currentUser">
             <ion-item (click)="logOut()">
               <ion-icon slot="start" name="log-out"></ion-icon>
               <ion-label>
                 Sair
-              </ion-label>
-            </ion-item>
-          </ion-menu-toggle>
-
-<!--           <ion-menu-toggle auto-hide="false" *ngIf="!connected">
-            <ion-item (click)="scan()">
-              <ion-label>
-                Conectar
-              </ion-label>
-              <ion-select [interfaceOptions]="customAlertOptions" interface="action-sheet">
-                <ion-select-option (click)="handleConnection(item)" *ngFor="let item of devices" value="item.name">
-                  {{ item.name }}
-                </ion-select-option>
-              </ion-select>
-              <ion-icon slot="start" name="bluetooth"></ion-icon>
-            </ion-item>
-          </ion-menu-toggle> -->
-
-          <ion-menu-toggle auto-hide="false" *ngIf="connected">
-            <ion-item >
-              <ion-label>
-                Desconectar
               </ion-label>
             </ion-item>
           </ion-menu-toggle>

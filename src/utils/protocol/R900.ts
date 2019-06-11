@@ -1,4 +1,4 @@
-import { R900Protocol } from '../../utils/protocol/R900Protocol';
+import { R900Protocol } from './R900Protocol_';
 import { R900Status } from '../../utils/protocol/R900Status';
 import { Message } from '../../utils/message/message';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
