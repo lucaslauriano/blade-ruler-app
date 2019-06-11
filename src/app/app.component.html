@@ -8,6 +8,26 @@
       </ion-header>
       <ion-content>
         <ion-list>
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item [routerDirection]="'root'" [routerLink]="['/home']">
+              <ion-icon slot="start" name="home"></ion-icon>
+              <ion-label>
+                Home
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
+
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="identifyBlade()">
+              <ion-icon slot="start" name="search"></ion-icon>
+              <ion-label>
+                Identificar Faca
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
             <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
               <ion-icon slot="start" [name]="p.icon"></ion-icon>
@@ -16,6 +36,7 @@
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
+
           <ion-menu-toggle auto-hide="false" *ngIf="afAuth.auth.currentUser">
             <ion-item (click)="logOut()">
               <ion-icon slot="start" name="log-out"></ion-icon>
@@ -24,6 +45,29 @@
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
+
+<!--           <ion-menu-toggle auto-hide="false" *ngIf="!connected">
+            <ion-item (click)="scan()">
+              <ion-label>
+                Conectar
+              </ion-label>
+              <ion-select [interfaceOptions]="customAlertOptions" interface="action-sheet">
+                <ion-select-option (click)="handleConnection(item)" *ngFor="let item of devices" value="item.name">
+                  {{ item.name }}
+                </ion-select-option>
+              </ion-select>
+              <ion-icon slot="start" name="bluetooth"></ion-icon>
+            </ion-item>
+          </ion-menu-toggle> -->
+
+          <ion-menu-toggle auto-hide="false" *ngIf="connected">
+            <ion-item >
+              <ion-label>
+                Desconectar
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+
           <ion-menu-toggle auto-hide="false" *ngIf="!afAuth.auth.currentUser">
             <ion-item [routerLink]="['/login']">
               <ion-icon slot="start" name="log-out"></ion-icon>
@@ -33,21 +77,6 @@
             </ion-item>
           </ion-menu-toggle>
 
-          <ion-menu-toggle auto-hide="false">
-            <ion-item (click)="scan()">
-              <ion-label>
-                Conectar
-              </ion-label>
-              <ion-select [interfaceOptions]="customAlertOptions" interface="alert">
-                <ion-select-option 
-                  (click)="handleConnection(item)"
-                  *ngFor="let item of devices" 
-                  value="item.name">
-                </ion-select-option>
-              </ion-select>
-              <ion-icon slot="start" name="log-out"></ion-icon>
-            </ion-item>
-          </ion-menu-toggle>
         </ion-list>
       </ion-content>
     </ion-menu>

@@ -162,33 +162,41 @@ export class R900Protocol {
 	}
 
 	public static makeProtocol(cmd: string, option: string, param2: number[]): number[] {
-		let protocol: {
+        console.log('cmd', cmd)
+        console.log('option', option)
+        console.log('param2',param2)
+
+        let protocol: {
 			str: string,
 			toString: Function
 		} = {
 			str: "", toString: function () { return this.str; }
 		};
-        /* append */(sb => { sb.str = sb.str.concat(<any>cmd); return sb; })(protocol);
-        /* append */(sb => { sb.str = sb.str.concat(<any>","); return sb; })(protocol);
+        (sb => { sb.str = sb.str.concat(<any>cmd); return sb; })(protocol);
+        (sb => { sb.str = sb.str.concat(<any>","); return sb; })(protocol);
 		
-		if (option != null) /* append */(sb => { sb.str = sb.str.concat(<any>option); return sb; })(protocol);
+		if (option != null) (sb => { sb.str = sb.str.concat(<any>option); return sb; })(protocol);
 		if (param2 != null && param2.length > 0) {
 			for (let i: number = 0; i < param2.length; ++i) {
 				{
-                /* append */(sb => { sb.str = sb.str.concat(<any>','); return sb; })(protocol);
-					if (param2[i] !== this.SKIP_PARAM) /* append */(sb => { sb.str = sb.str.concat(<any>param2[i]); return sb; })(protocol);
+                (sb => { sb.str = sb.str.concat(<any>','); return sb; })(protocol);
+					if (param2[i] !== this.SKIP_PARAM) (sb => { sb.str = sb.str.concat(<any>param2[i]); return sb; })(protocol);
 				};
 			}
 		}
-		return this.string2bytes(/* toString */protocol.str);
+		return this.string2bytes(protocol.str);
 	}
 
 	public static string2bytes(str: string): number[] {
-		let charProtocol: string[] = /* toCharArray */(str).split('');
+        console.log('str',str)
+		let charProtocol: string[] = (str).split('');
+        console.log('charProtocol',charProtocol)
 		let byteProtocol: number[] = (s => { let a = []; while (s-- > 0) a.push(0); return a; })(charProtocol.length + this.getTypeSize());
+        console.log('dbyteProtocol', byteProtocol)
 		let index: number = 0;
 		for (let i: number = 0; i < charProtocol.length; ++i, ++index) { byteProtocol[index] = (<number>((c => c.charCodeAt == null ? <any>c : c.charCodeAt(0))(charProtocol[i]) & 255) | 0); }
 		for (let i: number = 0; i < this.getTypeSize(); ++i, ++index) { byteProtocol[index] = this.getType()[i]; }
+        console.log('byteProtocol', byteProtocol)
 		return byteProtocol;
 	}
 

@@ -20,7 +20,7 @@ export class R900 {
         private mStrAccessErrMsg: string
     ) {
         if (this.mLastCmd === undefined) this.mLastCmd = null;
-        if (this.mSingleTag === undefined) this.mSingleTag = false;
+        if (this.mSingleTag === undefined) this.mSingleTag = true;
         if (this.mUseMask === undefined) this.mUseMask = false;
         if (this.mTimeout === undefined) this.mTimeout = 0;
         if (this.mQuerySelected === undefined) this.mQuerySelected = false;
@@ -28,13 +28,17 @@ export class R900 {
         if (this.mConnected === undefined) this.mConnected = false;
     }
 
+    public sendCmdOpenInterface() {
+        if(true) {
+            this.sendData(R900Protocol.OPEN_INTERFACE_1);
+
+        }
+    }
+
     public sendData(data) {
         if (this.mConnected === true) {
             this.bluetoothSerial.write(data);
         }
-    }
-    public sendCmdOpenInterface() {
-        this.sendData(R900Protocol.OPEN_INTERFACE_1);
     }
 
     private sendCmdInventory(f_s: number, f_m: number, to: number) {
@@ -118,7 +122,6 @@ export class R900 {
         }, error => {
             console.log('error: ', error);
         });
-
     }
 
     public checkBluetothIsEnabled() {
@@ -134,7 +137,7 @@ export class R900 {
     }
 
     public handleConnection(item, devices) {
-        console.log('')
+        console.log('R900 HANDLE Connection')
         if (!item) {
             return;
         }
@@ -231,7 +234,7 @@ export class R900 {
 
     public setConnection(status, zone, connected) {
         console.log('setConnection', status)
-        zone.run(() => {
+         zone.run(  () => {
             connected = false;
         });
     }
@@ -389,5 +392,6 @@ export class R900 {
             }
         )
     }
+
     
 }
