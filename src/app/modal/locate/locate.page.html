@@ -31,18 +31,13 @@
 
 
 <ion-content padding>
-    <!-- 
-    <ion-button (click)="scan()"
-                expand="full">
-        <ion-icon name="search"></ion-icon>
-        <ion-label>Localizar Faca</ion-label>
-    </ion-button> -->
 
     <ion-list>
         <ion-item>
             <ion-range min="-200"
                        max="200"
                        snaps
+                       value="{ lower: number; upper: number; }"
                        step="10"
                        ticks>
                 <ion-icon size="small"
