@@ -42,6 +42,7 @@ export class ConnectPage {
     }
     public registerSubscribeData() {
         this.bluetoothSerial.subscribeRawData().subscribe((data) => {
+            console.log('registerSubscribeData', data)
             this.bluetoothSerial.read().then((data) => {
                 console.log('registerSubscribeData', data)
                 if ((data.indexOf('online=0')) >= 0) {
@@ -250,20 +251,6 @@ export class ConnectPage {
         } catch (error) {
             console.log('error', error);
         }
-    }
-
-    public getInventory() {
-        this.bluetoothSerial.write(R900Protocol.CMD_INVENT).then(
-            data => {
-                console.log('getInventory data', data)
-                this.inventoring = true;
-                this.setRequester('inventário');
-                this.openInterface('stop', () => { });
-            },
-            err => {
-                console.log('err', err);
-            }
-        )
     }
 
     public stop() {

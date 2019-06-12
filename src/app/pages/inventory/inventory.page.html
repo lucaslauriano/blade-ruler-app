@@ -20,7 +20,7 @@
             </div>
         </ng-container>
 
-        <ion-item-sliding *ngFor="let item of blades">
+        <ion-item-sliding *ngFor="let item of bladesModel">
             <ion-item lines="inset"
                       button
                       [routerLink]="['/blades', item.id]">
@@ -39,11 +39,13 @@
     </ion-list>
 
 
-    <!--   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <!--   
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
         <ion-fab-button [routerLink]="['/new-blade']">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button>
-      </ion-fab> -->
+      </ion-fab> 
+    -->
 </ion-content>
 
 <ion-footer>
