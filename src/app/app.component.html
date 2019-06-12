@@ -18,6 +18,14 @@
             </ion-item>
           </ion-menu-toggle>
 
+          <ion-menu-toggle auto-hide="false">
+            <ion-item (click)="inventory()">
+              <ion-icon slot="start" name="md-albums"></ion-icon>
+              <ion-label>
+                Inventário
+              </ion-label>
+            </ion-item>
+          </ion-menu-toggle>
 
           <ion-menu-toggle auto-hide="false">
             <ion-item (click)="identifyBlade()">
@@ -29,10 +37,10 @@
           </ion-menu-toggle>
 
           <ion-menu-toggle auto-hide="false">
-            <ion-item (click)="locateBlade()">
-              <ion-icon slot="start" name="search"></ion-icon>
+            <ion-item (click)="newBlade()">
+              <ion-icon slot="start" name="md-add"></ion-icon>
               <ion-label>
-                Localizar
+                Incluir Faca
               </ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -59,7 +67,7 @@
             <ion-item [routerDirection]="'root'" [routerLink]="['/connect']">
               <ion-icon slot="start" name="bluetooth"></ion-icon>
               <ion-label>
-                Connectar
+                Conectar
               </ion-label>
             </ion-item>
           </ion-menu-toggle>

@@ -11,26 +11,27 @@
 
 <ion-content>
   <ion-card>
-    <ion-item>
-      <ion-label position="floating">Código RFID</ion-label>
-      <ion-input required type="text" [(ngModel)]="blade._rfid"></ion-input>
-    </ion-item>
+      
     <ion-item>
       <ion-label position="floating">Nome</ion-label>
       <ion-input required type="text" [(ngModel)]="blade.name"></ion-input>
     </ion-item>
+    
     <ion-item>
       <ion-label position="floating">Categoria</ion-label>
       <ion-input required type="text" [(ngModel)]="blade.categorie"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label position="floating">Montagens</ion-label>
       <ion-input required type="text" [(ngModel)]="blade.montage"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label position="floating">Formato</ion-label>
       <ion-input required type="text" [(ngModel)]="blade.shape"></ion-input>
     </ion-item>
+
     <ion-item>
       <ion-label position="floating">Local de Armazenamento</ion-label>
       <ion-input
@@ -59,4 +60,10 @@
       {{ saveButtonTitle }}
     </ion-button>
   </ion-card>
+
+  <ion-fab *ngIf="editingMode" vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button (click)="locateBlade()">
+          <ion-icon name="search"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
 </ion-content>

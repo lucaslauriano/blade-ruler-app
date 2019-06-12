@@ -4,7 +4,8 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>
-             {{ pageTitle }}
+            Inventário
+            <!--  {{ pageTitle }} -->
         </ion-title>
         <!--  <ion-searchbar slot="end" placeholder="Search Favorites"></ion-searchbar> -->
     </ion-toolbar>
@@ -29,10 +30,27 @@
             </ion-item>
             <ion-item-options side="end">
                 <ion-item-option color="danger"
-                                 (click)="remove(item)">
+                                 (click)="removeBlade(item)">
+                    <!-- <ion-icon size="" slot="start" color="dark" name="trash"></ion-icon> -->
                     Excluir
                 </ion-item-option>
             </ion-item-options>
         </ion-item-sliding>
     </ion-list>
+
+
+    <!--   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+        <ion-fab-button [routerLink]="['/new-blade']">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab> -->
 </ion-content>
+
+<ion-footer>
+    <ion-toolbar>
+        <ion-title>Total:</ion-title>
+        <ion-buttons slot="end">
+            <ion-title>{{ blades.length }}</ion-title>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,15 @@
+.range-knob-handle {
+    margin-left: unset;
+    -webkit-margin-start: calc(0px - var(--knob-handle-size) / 2);
+    margin-inline-start: calc(0px - var(--knob-handle-size) / 2);
+}
+
+.range-knob-handle {
+    left: 0;
+    top: calc((var(--height) - var(--knob-handle-size)) / 2);
+    margin-left: calc(0px - var(--knob-handle-size) / 2);
+    position: absolute;
+    width: var(--knob-handle-size);
+    height: var(--knob-handle-size);
+    text-align: center;
+}

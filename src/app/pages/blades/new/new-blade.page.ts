@@ -1,126 +1,152 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, NavController } from '@ionic/angular';
+import { Message } from 'src/utils/message/message';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { ModalController } from '@ionic/angular';
+///import { ModalPage } from '../modal/modal.page';
 
 import {
-  Blades,
-  BladesService
+    Blades,
+    BladesService
 } from 'src/app/services/blades.service';
 
 @Component({
-  selector: 'app-new-blade',
-  templateUrl: 'new-blade.page.html',
-  styleUrls: ['new-blade.page.scss']
+    selector: 'app-new-blade',
+    templateUrl: 'new-blade.page.html',
+    styleUrls: ['new-blade.page.scss'],
+    providers: [
+        BluetoothSerial,
+        Message
+    ],
 })
 export class NewBladePage implements OnInit {
 
-  public pageTitle: any;
-  public saveButtonTitle: any;
-  public buttonColor: any;
+    public pageTitle: any;
+    public saveButtonTitle: any;
+    public buttonColor: any;
 
-  public blade: Blades = {
-    _rfid: null,
-    categorie: null,
-    img: null,
-    montage: null,
-    name: null,
-    shape: null,
-    status: null,
-    storageLocation: null
-  };
+    public connected: boolean = false;
 
-  _id = null;
-  endpoint = 'blades';
+    public blade: Blades = {
+        _rfid: null,
+        categorie: null,
+        img: null,
+        montage: null,
+        name: null,
+        shape: null,
+        status: null,
+        storageLocation: null
+    };
 
-  constructor(
-    private bladesService: BladesService,
-    private route: ActivatedRoute,
-    private loadingController: LoadingController,
-    private navigation: NavController
-  ) { }
+    public editingMode: boolean = false;
 
-  ngOnInit() {
-    this._id = this.route.snapshot.params['id'];
-    this.init()
-  }
+    _id = null;
+    endpoint = 'blades';
 
-  async loadBlade() {
+    constructor(
+        private bladesService: BladesService,
+        private bluetoothSerial: BluetoothSerial,
+        private route: ActivatedRoute,
+        public router: Router,
+        public message: Message,
+        private loadingController: LoadingController,
+        private navigation: NavController
+    ) { }
 
-    const loading = await this.loadingController.create({
-      message: 'Carregando...',
-      spinner: 'crescent',
-      duration: 2000
-    });
+    ngOnInit() {
+        this._id = this.route.snapshot.params['id'];
+        this.init()
 
-    await loading.present();
-
-    this.get(loading)
-  }
-
-  savingTag() {
-    console.log('Serializando');
-
-  }
-
-  async saveBlade() {
-    const loading = await this.loadingController.create({
-      message: 'Salvando...',
-      spinner: 'crescent',
-      duration: 2000
-    });
-
-    await loading.present();
-
-    if (this._id) {
-      this.update(loading);
-    } else {
-      this.add(loading);
     }
-  }
 
-  init() {
-    if (this._id) {
-      this.loadBlade();
-      this.loadTextUpdate();
-    } else {
-      this.loadTextNew();
+    async loadBlade() {
+
+        const loading = await this.loadingController.create({
+            message: 'Carregando...',
+            spinner: 'crescent',
+            duration: 2000
+        });
+
+        await loading.present();
+
+        this.get(loading)
     }
-  }
 
-  loadTextNew() {
-    this.pageTitle = 'Nova Facas';
-    this.saveButtonTitle = 'Incluir';
-    this.buttonColor = 'primary';
-  }
+    savingTag() {
+        console.log('Serializando');
 
-  loadTextUpdate() {
-    this.pageTitle = 'Editar Facas';
-    this.saveButtonTitle = 'Salvar';
-    this.buttonColor = 'success';
-  }
+    }
 
-  get(loading) {
-    this.bladesService.getBlade(this._id).subscribe(res => {
-      loading.dismiss();
-      this.blade = res;
-    });
-  }
+    async saveBlade() {
+        const loading = await this.loadingController.create({
+            message: 'Salvando...',
+            spinner: 'crescent',
+            duration: 2000
+        });
 
-  add(loading) {
-    this.bladesService.addBlade(this.blade).then(() => {
-      this.savingTag()
-      loading.dismiss();
-      this.navigation.navigateBack(this.endpoint);
-    });
-  }
+        await loading.present();
 
-  update(loading) {
-    this.bladesService
-      .updateBlade(this.blade, this._id)
-      .then(() => {
-        loading.dismiss();
-        this.navigation.navigateBack(this.endpoint);
-      });
-  }
+        if (this._id) {
+            this.update(loading);
+        } else {
+            this.add(loading);
+        }
+    }
+
+    init() {
+
+        if (this._id) {
+            this.loadBlade();
+            this.loadTextUpdate();
+            this.editingMode = true;
+        } else {
+            this.loadTextNew();
+        }
+    }
+
+    locateBlade() {
+        if (this.connected) {
+            console.log('data');
+        } else {
+            this.message.notify('Dispositivo não conectado!');
+        }
+    }
+
+    loadTextNew() {
+        this.pageTitle = 'Nova Faca';
+        this.saveButtonTitle = 'Incluir';
+        this.buttonColor = 'primary';
+    }
+
+    loadTextUpdate() {
+        this.pageTitle = 'Editar Faca';
+        this.saveButtonTitle = 'Salvar';
+        this.buttonColor = 'success';
+    }
+
+    get(loading) {
+        this.bladesService.getBlade(this._id).subscribe(res => {
+            loading.dismiss();
+            this.blade = res;
+        });
+    }
+
+    add(loading) {
+        this.bladesService.addBlade(this.blade).then(() => {
+            this.savingTag()
+            loading.dismiss();
+            this.navigation.navigateBack(this.endpoint);
+        });
+    }
+
+    update(loading) {
+        this.bladesService
+            .updateBlade(this.blade, this._id)
+            .then(() => {
+                loading.dismiss();
+                this.navigation.navigateBack(this.endpoint);
+            });
+    }
 
 }

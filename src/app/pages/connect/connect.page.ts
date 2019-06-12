@@ -102,6 +102,7 @@ export class ConnectPage {
         this.bluetoothSerial.list().then(devicesFound => {
             this.devices = devicesFound;
         }, error => {
+            this.message.notify('Erro ao conectar, reinicie o dispositivo! ');
             console.log('error: ', error);
         });
     }

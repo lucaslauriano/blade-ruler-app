@@ -1,0 +1,59 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-buttons slot="secondary">
+            <ion-button>
+
+                <ion-icon style="font-size:25px; color:#22d022"
+                          *ngIf="connected"
+                          ios="ios-radio-button-on"
+                          md="md-radio-button-on">
+                </ion-icon>
+                <ion-icon style="font-size:25px; color:red"
+                          *ngIf="!connected"
+                          ios="ios-radio-button-on"
+                          md="md-radio-button-on">
+                </ion-icon>
+            </ion-button>
+
+        </ion-buttons>
+        <ion-buttons slot="primary">
+            <ion-button>
+                <ion-icon slot="icon-only"
+                          name="more"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>Localizar</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding>
+    <!-- 
+    <ion-button (click)="scan()"
+                expand="full">
+        <ion-icon name="search"></ion-icon>
+        <ion-label>Localizar Faca</ion-label>
+    </ion-button> -->
+
+    <ion-list>
+        <ion-item>
+            <ion-range min="-200"
+                       max="200"
+                       snaps
+                       step="10"
+                       ticks>
+                <ion-icon size="small"
+                          slot="start"
+                          name="md-thermometer"></ion-icon>
+                <ion-icon slot="end"
+                          name="md-thermometer"></ion-icon>
+            </ion-range>
+        </ion-item>
+
+    </ion-list>
+
+    <ion-spinner name="bublles"></ion-spinner>
+</ion-content>

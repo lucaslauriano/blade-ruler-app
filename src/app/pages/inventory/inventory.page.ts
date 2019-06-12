@@ -6,12 +6,12 @@ import {
 } from 'src/app/services/blades.service';
 
 @Component({
-  selector: 'app-blades',
-  templateUrl: 'blades.page.html',
-  styleUrls: ['blades.page.scss']
+  selector: 'app-inventory',
+  templateUrl: 'inventory.page.html',
+  styleUrls: ['inventory.page.scss']
 })
 
-export class BladesPage implements OnInit {
+export class InventoryPage implements OnInit {
   public blades: Blades[];
   public pageTitle: any;
 

@@ -9,106 +9,117 @@ import { Message } from 'src/utils/message/message';
 import { BLE } from '@ionic-native/ble/ngx';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  providers: [
-    BluetoothSerial, 
-    Message,
-    BLE
-  ],
-  inputs: [
-    'connected'
-  ]
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    providers: [
+        BluetoothSerial,
+        Message,
+        BLE
+    ],
+    inputs: [
+        'connected'
+    ]
 })
 
 export class AppComponent {
-  
-  public connected: boolean = false;
-  public tag: string = '123456'
-  public device;
 
-  constructor(
-    private ble: BLE,
-    public bluetoothSerial: BluetoothSerial,
-    public router: Router,
-    private platform: Platform,
-    private message: Message,
-    private splashScreen: SplashScreen,
-    private loadingController: LoadingController,
-    private statusBar: StatusBar,
-    private afAuth: AngularFireAuth,
-    private navigation: NavController
-  ) {
-    this.initializeApp();
-  }
+    public connected: boolean = false;
 
-  logOut() {
-    this.afAuth.auth.signOut().then(() => {
-      this.router.navigate(['/login']);
-      location.reload();
+    public tag: string;
+    public device;
 
-    })
-  }
+    constructor(
+        public bluetoothSerial: BluetoothSerial,
+        public router: Router,
+        private platform: Platform,
+        private message: Message,
+        private splashScreen: SplashScreen,
+        private loadingController: LoadingController,
+        private statusBar: StatusBar,
+        private afAuth: AngularFireAuth,
+        private navigation: NavController
+    ) {
+        this.initializeApp();
+    }
 
-  navigate() {
-    this.navigation.navigateBack('login');
-  }
+    logOut() {
+        this.afAuth.auth.signOut().then(() => {
+            this.router.navigate(['/login']);
+            location.reload();
 
-  async load(message) {
-    const loading = await this.loadingController.create({
-      message: message,
-      spinner: 'crescent',
-      duration: 50000
-    });
+        })
+    }
 
-    await loading.present();
+    navigate() {
+        this.navigation.navigateBack('login');
+    }
 
-    loading.dismiss();
-  }
+    async load(message) {
+        const loading = await this.loadingController.create({
+            message: message,
+            spinner: 'crescent',
+            duration: 50000
+        });
 
-  initializeApp() {
-    this.platform.ready().then(() => {
+        await loading.present();
 
-      this.statusBar.styleDefault();
-      this.splashScreen.hide();
-      this.bluetoothSerial.subscribeRawData().subscribe(
-        data => {
-          console.log('subscribeRawData', data);
-        },
-        err => {
-          console.log('error subscribeRawData', err);
+        loading.dismiss();
+    }
+
+    public isConnected() {
+        this.bluetoothSerial.isConnected().then(
+            status => {
+                this.connected = true;
+                console.log('isConnected=> ', status);
+
+            },
+            err => {
+                console.log('error on connect: ', err);
+            }
+        )
+
+    }
+
+    initializeApp() {
+        this.platform.ready().then(() => {
+
+            this.statusBar.styleDefault();
+            this.splashScreen.hide();
+            this.bluetoothSerial.subscribeRawData().subscribe(
+                data => {
+                    console.log('subscribeRawData', data);
+                },
+                err => {
+                    console.log('error subscribeRawData', err);
+                }
+            );
+        });
+    }
+
+    public identifyBlade() {
+
+        if (this.connected) {
+            let id = this.tag
+            this.router.navigate(['/identify',  id ]);
+        } else {
+            this.message.notify('Dispositivo não conectado!');
         }
-      );
-    });
-  }
-
-  public identifyBlade() {
-    if(this.connected) {
-
-      if(this.tag) {
-        this.router.navigate(['/identify']);
-      } else {
-        this.router.navigate(['/new-blade']);
-        
-      }
-    } else {
-      this.message.notify('Dispositivo não conectado!');
     }
-  }
 
-  public locateBlade() {
-    if (this.connected) {
-        console.log('data');
-    } else {
-      this.message.notify('Dispositivo não conectado!');
+    public newBlade() {
+        if (this.connected) {
+            this.router.navigate(['/new-blade']);
+        } else {
+            this.message.notify('Dispositivo não conectado!');
+        }
     }
-  }
 
-  public success(data) {
-    console.log(data);
-  }
-  public failure(data) {
-    console.log(data);
-  }
+    public inventory() {
+        if (this.connected) {
+            this.router.navigate(['/inventory']);
+        } else {
+            this.message.notify('Dispositivo não conectado!');
+        }
+    }
 
 }
