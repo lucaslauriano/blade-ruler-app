@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform, NavController, LoadingController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { Message } from 'src/utils/message/message';
 import { BLE } from '@ionic-native/ble/ngx';
+import { DataService } from './services/data.service';
 
 @Component({
     selector: 'app-root',
@@ -21,18 +22,20 @@ import { BLE } from '@ionic-native/ble/ngx';
     ]
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
 
     public connected: boolean = false;
 
     public tag: string;
     public device;
+    public message: string;
 
     constructor(
         public bluetoothSerial: BluetoothSerial,
         public router: Router,
         private platform: Platform,
-        private message: Message,
+        private data: DataService,
+        //private message: Message,
         private splashScreen: SplashScreen,
         private loadingController: LoadingController,
         private statusBar: StatusBar,
@@ -40,6 +43,10 @@ export class AppComponent {
         private navigation: NavController
     ) {
         this.initializeApp();
+    }
+
+    ngOnInit() {
+        this.data.currentMessage.subscribe(message => this.message = message)
     }
 
     logOut() {
@@ -102,7 +109,7 @@ export class AppComponent {
             let id = this.tag
             this.router.navigate(['/identify',  id ]);
         } else {
-            this.message.notify('Dispositivo não conectado!');
+          //  this.message.notify('Dispositivo não conectado!');
         }
     }
 
@@ -110,7 +117,7 @@ export class AppComponent {
         if (this.connected) {
             this.router.navigate(['/new-blade']);
         } else {
-            this.message.notify('Dispositivo não conectado!');
+           // this.message.notify('Dispositivo não conectado!');
         }
     }
 
@@ -118,7 +125,7 @@ export class AppComponent {
         if (this.connected) {
             this.router.navigate(['/inventory']);
         } else {
-            this.message.notify('Dispositivo não conectado!');
+           // this.message.notify('Dispositivo não conectado!');
         }
     }
 

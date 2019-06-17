@@ -5,7 +5,9 @@ import { Loader } from '../../../utils/loader/loader';
 import { Message } from 'src/utils/message/message';
 import { Platform, NavController, LoadingController } from '@ionic/angular';
 import { R900Protocol } from 'src/utils/protocol/R900Protocol';
-
+import { DataService } from '../../services/data.service';
+import { PopoverController } from '@ionic/angular';
+//import { PopoverComponent } from '../../component/popover/popover.connect.component';
 
 @Component({
     selector: 'app-connect',
@@ -17,11 +19,12 @@ import { R900Protocol } from 'src/utils/protocol/R900Protocol';
         Message
     ]
 })
-export class ConnectPage {
+export class ConnectPage implements OnInit {
 
     public devices: Array<any> = [];
     public tags: Array<any> = [];
     public status: string = '';
+    public message: string;
     public showBeep: boolean = false;
     public connected: boolean = false;
     public batteryLevel: String = '';
@@ -31,8 +34,10 @@ export class ConnectPage {
     constructor(
         private bluetoothSerial: BluetoothSerial,
         private zone: NgZone,
+        public popoverController: PopoverController,
         private loader: Loader,
-        private message: Message,
+        private data: DataService,
+       // private message: Message,
         private platform: Platform) {
 
         if (this.platform.is('cordova')) {
@@ -40,6 +45,24 @@ export class ConnectPage {
         }
 
     }
+
+    ngOnInit() {
+        this.data.currentMessage.subscribe(message => this.message = message)
+    }
+
+    newMessage() {
+        this.data.changeMessage("Hello from Sibling")
+    }
+
+    async presentPopover(ev: any) {
+        const popover = await this.popoverController.create({
+            component: PopoverConnectComponent,
+            event: ev,
+            translucent: true
+        });
+        return await popover.present();
+    }
+
     public registerSubscribeData() {
         this.bluetoothSerial.subscribeRawData().subscribe((data) => {
             console.log('registerSubscribeData', data)
@@ -51,7 +74,7 @@ export class ConnectPage {
 
                 if ((data.indexOf('CONNECT F0D7AA6993CE')) >= 0) {
                     this.setConnection(false);
-                    this.message.notify('Erro ao conectar, reinicie o device(DOTR-900) e tente novamente!');
+                   // this.message.notify('Erro ao conectar, reinicie o device(DOTR-900) e tente novamente!');
                 }
 
                 this.parseTags(data);
@@ -103,7 +126,7 @@ export class ConnectPage {
         this.bluetoothSerial.list().then(devicesFound => {
             this.devices = devicesFound;
         }, error => {
-            this.message.notify('Erro ao conectar, reinicie o dispositivo! ');
+            //this.message.notify('Erro ao conectar, reinicie o dispositivo! ');
             console.log('error: ', error);
         });
     }
@@ -149,7 +172,7 @@ export class ConnectPage {
                 cb(status);
             },
             err => {
-                this.message.notify('Erro ao conectar, reinicie o dispositivo!');
+               // this.message.notify('Erro ao conectar, reinicie o dispositivo!');
                 console.log('Error on Connecting: ', err);
                 this.setConnection(false);
             }
