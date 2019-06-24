@@ -29,6 +29,7 @@ export class NewBladePage implements OnInit {
     public connected: boolean = false;
 
     public blade: Blades = {
+        id: null,
         _rfid: null,
         categorie: null,
         img: null,
