@@ -3,7 +3,7 @@ export class R900Protocol
 	
     public static NULL_1:Uint8Array = new Uint8Array([0x0d, 0x0a]); 
     public static NULL_2:Uint8Array = new Uint8Array([0x0d]); 
-    // { 0x0d };
+    public static SKIP_PARAM: number = -1;
 	public static OPEN_INTERFACE_1 = new Uint8Array([0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a, 0x0d, 0x0a]);
 	public static OPEN_INTERFACE_2 = new Uint8Array([0x0d, 0x0d, 0x0d, 0x0d, 0x0d, 0x0d, 0x0d, 0x0d]);
 	// public static final byte[] OPEN_INTERFACE_2 = new byte[]
@@ -130,189 +130,77 @@ export class R900Protocol
 		if( this.N_TYPE == 1 )
 			return this.NULL_1;
 		return this.NULL_2;
+    }
+    
+    public static makeProtocol(cmd: string, option: string, param2: number[]): number[] {
+        console.log('cmd', cmd)
+        console.log('option', option)
+        console.log('param2',param2)
+
+        let protocol: {
+			str: string,
+			toString: Function
+		} = {
+			str: "", toString: function () { return this.str; }
+		};
+        (sb => { sb.str = sb.str.concat(<any>cmd); return sb; })(protocol);
+        (sb => { sb.str = sb.str.concat(<any>","); return sb; })(protocol);
+		
+		if (option != null) (sb => { sb.str = sb.str.concat(<any>option); return sb; })(protocol);
+		if (param2 != null && param2.length > 0) {
+			for (let i: number = 0; i < param2.length; ++i) {
+				{
+                (sb => { sb.str = sb.str.concat(<any>','); return sb; })(protocol);
+					if (param2[i] !== this.SKIP_PARAM) (sb => { sb.str = sb.str.concat(<any>param2[i]); return sb; })(protocol);
+				};
+			}
+		}
+		return this.string2bytes(protocol.str);
 	}
 
-	// public static makeProtocol( cmd:String, param:Array<number> )
-	// {
-	// 	StringBuilder protocol = new StringBuilder();
-	// 	protocol.append(cmd);
-
-	// 	if( param != null && param.length > 0 )
-	// 	{
-	// 		for( int i = 0; i < param.length; ++i )
-	// 		{
-	// 			protocol.append(',');
-	// 			if( param[ i ] != SKIP_PARAM )
-	// 				protocol.append(param[ i ]);
-	// 		}
-	// 	}
-
-	// 	return string2bytes( protocol.toString() );
-	// }
+	public static string2bytes(str: string): number[] {
+        console.log('str',str)
+		let charProtocol: string[] = (str).split('');
+        console.log('charProtocol',charProtocol)
+		let byteProtocol: number[] = (s => { let a = []; while (s-- > 0) a.push(0); return a; })(charProtocol.length + this.getTypeSize());
+        console.log('dbyteProtocol', byteProtocol)
+		let index: number = 0;
+		for (let i: number = 0; i < charProtocol.length; ++i, ++index) { byteProtocol[index] = (<number>((c => c.charCodeAt == null ? <any>c : c.charCodeAt(0))(charProtocol[i]) & 255) | 0); }
+		for (let i: number = 0; i < this.getTypeSize(); ++i, ++index) { byteProtocol[index] = this.getType()[i]; }
+        console.log('byteProtocol', byteProtocol)
+		return byteProtocol;
+    }
+    
+   /*   public static makeProtocol(cmd: string, option: string, param2: number[] ): number[]
+	 {
+	 	StringBuilder protocol = new StringBuilder();
+	 	protocol.append(cmd);
+ 	protocol.append( "," );
+	 	if( option != null )
+	 		protocol.append( option );
+		 	if( param2 != null && param2.length > 0 )
+	 	{
+	 		for( int i = 0; i < param2.length; ++i )
+	 		{
+	 			protocol.append(',');
+	 			if( param2[ i ] != SKIP_PARAM )
+	 				protocol.append(param2[ i ]);
+	 		}
+	 	}
+		 	return string2bytes( protocol.toString() );
+	 }
+	 public static final byte[] string2bytes( String str )
+	 {
+	 	char[] charProtocol = str.toCharArray();
+	 	byte[] byteProtocol = new byte[charProtocol.length + getTypeSize()];
+	 	int index = 0;
+	 	for( int i = 0; i < charProtocol.length; ++i, ++index )
+	 		byteProtocol[ index ] = (byte) ( charProtocol[ i ] & 0xff );
+ 	// ---
+	 	for( int i = 0; i < getTypeSize(); ++i, ++index )
+	 		byteProtocol[ index ] = getType()[ i ];
+ 	return byteProtocol;
+	 }
+ */
 	
-	// public static final byte[] makeProtocol( String cmd )
-	// {
-	// 	StringBuilder protocol = new StringBuilder();
-	// 	protocol.append(cmd);
-	// 	return string2bytes( protocol.toString() );
-	// }
-	
-	// //<-- eric 2012.12.12
-	// public static final byte[] makeProtocol( String cmd, int[] param, String param1, String param2)
-	// {
-	// 	StringBuilder protocol = new StringBuilder();
-	// 	protocol.append(cmd);
-			
-	// 	// param
-	// 	if( param != null && param.length > 0)
-	// 	{
-	// 		for( int i=0; i<param.length; ++i)
-	// 		{
-	// 			protocol.append(',');
-	// 			if( param[i] != SKIP_PARAM)
-	// 				protocol.append(param[i]);				
-	// 		}		
-	// 	}
-			
-	// 	// param1
-	// 	protocol.append( "," );
-	
-	// 	if( param1 != null )
-	// 		protocol.append( param1 );
-			
-	// 	// param2
-	// 	protocol.append( "," );
-		
-	// 	if( param1 != null )
-	// 		protocol.append( param2 );	
-		
-	// 	return string2bytes( protocol.toString() );
-	// }	
-
-	
-	// public static final byte[] makeProtocol( String cmd, String[] options )
-	// {
-	// 	StringBuilder protocol = new StringBuilder();
-	// 	protocol.append(cmd);
-
-	// 	if( options != null && options.length > 0)
-	// 	{
-	// 		for( int i = 0; i < options.length; ++i )
-	// 		{
-	// 			protocol.append( "," );
-	// 			if( options[ i ] != null )
-	// 				protocol.append( options[ i ] );
-	// 		}
-	// 	}
-		
-	// 	return string2bytes( protocol.toString() );
-	// }
-	
-	// public static final byte[] makeProtocol( String cmd, int[] param, String[] options, int[] param2 )
-	// {
-	// 	StringBuilder protocol = new StringBuilder();
-	// 	protocol.append(cmd);
-
-	// 	if( param != null && param.length > 0 )
-	// 	{
-	// 		for( int i = 0; i < param.length; ++i )
-	// 		{
-	// 			protocol.append(',');
-	// 			if( param[ i ] != SKIP_PARAM )
-	// 				protocol.append(param[ i ]);
-	// 		}
-	// 	}
-		
-		
-	// 	if( options != null )
-	// 	{
-	// 		for( int i = 0; i < options.length; ++i )
-	// 		{
-	// 			protocol.append( "," );
-	// 			if( options[ i ] != null )
-	// 				protocol.append( options[ i ] );
-	// 		}
-	// 	}
-		
-	// 	if( param2 != null && param2.length > 0 )
-	// 	{
-	// 		for( int i = 0; i < param2.length; ++i )
-	// 		{
-	// 			protocol.append(',');
-	// 			if( param2[ i ] != SKIP_PARAM )
-	// 				protocol.append(param2[ i ]);
-	// 		}
-	// 	}
-		
-	// 	return string2bytes( protocol.toString() );
-	// }
-	
-	// public static final byte[] makeProtocol( String cmd, int[] param, String option, int[] param2 )
-	// {
-	// 	StringBuilder protocol = new StringBuilder();
-	// 	protocol.append(cmd);
-
-	// 	if( param != null && param.length > 0 )
-	// 	{
-	// 		for( int i = 0; i < param.length; ++i )
-	// 		{
-	// 			protocol.append(',');
-	// 			if( param[ i ] != SKIP_PARAM )
-	// 				protocol.append(param[ i ]);
-	// 		}
-	// 	}
-		
-	// 	protocol.append( "," );
-	// 	if( option != null )
-	// 		protocol.append( option );
-		
-	// 	if( param2 != null && param2.length > 0 )
-	// 	{
-	// 		for( int i = 0; i < param2.length; ++i )
-	// 		{
-	// 			protocol.append(',');
-	// 			if( param2[ i ] != SKIP_PARAM )
-	// 				protocol.append(param2[ i ]);
-	// 		}
-	// 	}
-		
-	// 	return string2bytes( protocol.toString() );
-	// }
-	
-	// public static final byte[] makeProtocol( String cmd, String option, int[] param2 )
-	// {
-	// 	StringBuilder protocol = new StringBuilder();
-	// 	protocol.append(cmd);
-
-	// 	protocol.append( "," );
-	// 	if( option != null )
-	// 		protocol.append( option );
-		
-	// 	if( param2 != null && param2.length > 0 )
-	// 	{
-	// 		for( int i = 0; i < param2.length; ++i )
-	// 		{
-	// 			protocol.append(',');
-	// 			if( param2[ i ] != SKIP_PARAM )
-	// 				protocol.append(param2[ i ]);
-	// 		}
-	// 	}
-		
-	// 	return string2bytes( protocol.toString() );
-	// }
-	
-	// public static final byte[] string2bytes( String str )
-	// {
-	// 	char[] charProtocol = str.toCharArray();
-	// 	byte[] byteProtocol = new byte[charProtocol.length + getTypeSize()];
-	// 	int index = 0;
-	// 	for( int i = 0; i < charProtocol.length; ++i, ++index )
-	// 		byteProtocol[ index ] = (byte) ( charProtocol[ i ] & 0xff );
-
-	// 	// ---
-	// 	for( int i = 0; i < getTypeSize(); ++i, ++index )
-	// 		byteProtocol[ index ] = getType()[ i ];
-
-	// 	return byteProtocol;
-	// }
 }

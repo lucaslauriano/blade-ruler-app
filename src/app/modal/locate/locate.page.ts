@@ -1,98 +1,73 @@
 import { Component, OnInit } from '@angular/core';
-import { BluetoothLE } from '@ionic-native/bluetooth-le/ngx';
-import { Platform } from '@ionic/angular';
+import { Platform, AlertController } from '@ionic/angular';
+import  KalmanFilter from 'kalmanjs';
 
 @Component({
-	selector: 'app-locate',
-	templateUrl: './locate.page.html',
-	styleUrls: ['./locate.page.scss'],
+    selector: 'app-locate',
+    templateUrl: './locate.page.html',
+    styleUrls: ['./locate.page.scss'],
+    providers: [
+    ]
 })
 export class LocatePage implements OnInit {
 
-	public rssi;
-	public device;
-	public foundDevices;
-	 
-	constructor(public bluetoothle: BluetoothLE, public plt: Platform) {
+    public rssi;
+    public device;
+    public value = -200;
+    public floatingValue;
+    public foundDevices;
 
-	}
+    constructor(
+        public plt: Platform,
+        public alertController: AlertController
+    ) {
 
-	ngOnInit() {
-		this.initializeBLE();
-	}
 
-	initializeBLE() {
-		this.plt.ready().then((readySource) => {
+    }
 
-			console.log('Platform ready from', readySource);
+    ngOnInit() {
+        const kf = new KalmanFilter();
+        this.floatingValue = kf.filter(this.value)
+    }
 
-			this.bluetoothle.initialize().subscribe(ble => {
-				console.log('ble', ble.status) // logs 'enabled'
-			});
-		});
-	}
+     async presentAlertPrompt() {
+        console.log('presentAlertPrompt')
+        const alert = await this.alertController.create({
+            header: 'Simulação: Localizar',
+            inputs: [
+                {
+                    name: 'tag',
+                    type: 'text',
+                    value: '',
+                    placeholder: 'Valor RSSI'
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        
+                    }
+                }, {
+                    text: 'Localizar',
+                    handler: (data) => {
+                        const kf = new KalmanFilter();
+                       this.value = data.tag;
+                       console.log(this.value);
+                       this.floatingValue = kf.filter(this.value);
+                       console.log(this.floatingValue);
+                    }
+                }
+            ]
+        });
 
-	startScan() {
-		//this.bluetoothle.startScan(this.startScanSuccess, this.startScanError, this.device);
-	}
+        await alert.present();
+    }
 
-	startScanSuccess(data) {
-		this.rssi = data.rssi;
-	}
-
-	startScanError(error) {
-		console.log(error);
-	}
-
-	connect(address) {
-
-		console.log('Connecting to device: ' + address + "...", "status");
-
-		if (cordova.platformId === "windows") {
-
-		//	this.getDeviceServices(address);
-
-		}
-		else {
-
-			this.stopScan();
-
-			new Promise(function (resolve, reject) {
-
-				this.bluetoothle.connect(resolve, reject, { address: address });
-
-			}).then(this.connectSuccess, this.handleError);
-
-		}
-	}
-
-	stopScan() {
-
-		new Promise(function (resolve, reject) {
-
-			this.bluetoothle.stopScan(resolve, reject);
-
-		}).then(this.stopScanSuccess, this.handleError);
-	}
-
-	stopScanSuccess() {
-
-		if (!this.foundDevices.length) {
-
-			console.log("NO DEVICES FOUND");
-		}
-		else {
-
-			console.log("Found " + this.foundDevices.length + " devices.", "status");
-		}
-	}
-
-	connectSuccess(data) {
-		console.log(data);
-	}
-
-	handleError(data) {
-		console.log(data);
-	}	
+    float2int (value) {
+        return value | 0;
+    }
 
 }

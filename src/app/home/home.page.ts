@@ -3,14 +3,15 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Loader } from '../../utils/loader/loader';
 import { Message } from '../../utils/message/message';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { DataService } from '../services/data.service';
 
 @Component({
     selector: 'app-home',
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
-    providers: [BluetoothSerial, Loader, Message]
+    providers: [BluetoothSerial, Loader, Message, DataService]
 })
 
 export class HomePage implements OnInit {
@@ -24,12 +25,15 @@ export class HomePage implements OnInit {
     public connected: boolean = false;
 
     public tag: string;
+    public messager: string;
 
     constructor(
         private loadingController: LoadingController,
         public bluetoothSerial: BluetoothSerial,
         public router: Router,
+        public alertController: AlertController,
         private message: Message,
+        private data: DataService,
         public afAuth: AngularFireAuth) {
 
         this.shortcut.newBlade = '/new-blade';
@@ -39,6 +43,8 @@ export class HomePage implements OnInit {
     }
 
     ngOnInit() {
+        this.data.currentMessage.subscribe(message => this.messager = message)
+        console.log(this.messager);
     }
 
     async load(message) {
@@ -50,26 +56,47 @@ export class HomePage implements OnInit {
         await loading.present();
         loading.dismiss();
     }
+    async presentAlertPrompt() {
+        console.log('presentAlertPrompt')
+        const alert = await this.alertController.create({
+            header: 'Simulação: Identificar',
+            inputs: [
+                {
+                    name: 'tag',
+                    type: 'text',
+                    value: '',
+                    placeholder: 'Tag Id'
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        this.router.navigate(['/home']);
+                    }
+                }, {
+                    text: 'Identificar',
+                    handler: (data) => {
+                        this.identifyBlade(data.tag)
+                    }
+                }
+            ]
+        });
 
-    public identifyBlade() {
-        if (this.tag) {
-            let id = this.tag
-            this.router.navigate(['/identify',  id ]);
-        } else {
-            this.message.notify('Dispositivo não conectado!');
-        }
+        await alert.present();
+    }
+
+    public identifyBlade(id) {
+     
+        this.router.navigate(['/identify', id]);
     }
 
     public newBlade() {
-        if (this.tag) {
-            let id = this.tag
-            this.router.navigate(['/new-blade']);
-        } else {
-            this.message.notify('Dispositivo não conectado!');
-        }
+        this.router.navigate(['/new-blade']);
     }
 
-    
     public isConnected() {
         this.bluetoothSerial.isConnected().then(
             status => {
@@ -86,11 +113,8 @@ export class HomePage implements OnInit {
     }
 
     public inventory() {
-        if (this.isConnected()) {
-            this.router.navigate(['/inventory']);
-        } else {
-            this.message.notify('Dispositivo não conectado!');
-        }
+        this.router.navigate(['/inventory']);
+
     }
 
 }

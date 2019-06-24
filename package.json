@@ -43,6 +43,8 @@
     "firebase": "^5.10.1",
     "firebaseui": "^3.6.0",
     "firebaseui-angular": "^3.4.1",
+    "kalman": "0.0.2",
+    "kalmanjs": "^1.1.0",
     "rxjs": "~6.3.3",
     "zone.js": "~0.8.29"
   },

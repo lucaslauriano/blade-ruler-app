@@ -15,6 +15,8 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { environment } from '../environments/environment';
 import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
+import { ConnectConfigPopoverPageModule } from './pages/connect/connect-config-popover/connect-config-popover.module';
+import { R900 } from 'src/utils/protocol/R900';
 
 const firebaseUiAuthConfig: firebaseui.auth.Config = {
   signInFlow: 'popup',
@@ -55,6 +57,7 @@ const firebaseUiAuthConfig: firebaseui.auth.Config = {
     AppRoutingModule,
     AngularFireAuthModule,
     AngularFirestoreModule,
+    ConnectConfigPopoverPageModule,
     AngularFireDatabaseModule,
     IonicModule.forRoot(),
     AngularFireModule.initializeApp(environment.firebase),

@@ -1,10 +1,10 @@
 import { R900Protocol } from './R900Protocol_';
 import { R900Status } from '../../utils/protocol/R900Status';
 import { Message } from '../../utils/message/message';
-import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx'
 
 export class R900 {
-
+    
     public static MSG_REFRESH_LIST_TAG: number = 22;
 
     public mLastCmd: string;
@@ -16,6 +16,7 @@ export class R900 {
     
     constructor(
         private bluetoothSerial: BluetoothSerial,
+
         private message: Message,
         private mStrAccessErrMsg: string
     ) {
@@ -93,6 +94,7 @@ export class R900 {
                 console.log('err', err);
             }
         )
+        
     }
 
     public setStatus(status, newStatus) {

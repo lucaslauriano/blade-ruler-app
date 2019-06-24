@@ -48,7 +48,9 @@ const routes: Routes = [
   },
   { path: 'login', loadChildren: './pages/login/login.module#LoginPageModule' },
   { path: 'connect', loadChildren: './pages/connect/connect.module#ConnectPageModule' },
-  { path: 'inventory', loadChildren: './pages/inventory/inventory.module#InventoryPageModule' },  { path: 'locate', loadChildren: './modal/locate/locate.module#LocatePageModule' }
+  { path: 'inventory', loadChildren: './pages/inventory/inventory.module#InventoryPageModule' },
+  { path: 'locate', loadChildren: './modal/locate/locate.module#LocatePageModule' },
+  { path: 'connect-config-popover', loadChildren: './pages/connect/connect-config-popover/connect-config-popover.module#ConnectConfigPopoverPageModule' }
 
 
 

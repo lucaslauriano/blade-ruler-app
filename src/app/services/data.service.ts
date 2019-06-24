@@ -9,7 +9,7 @@ export class DataService {
 
     constructor() { }
 
-    changeMessage(message: string) {
+    async changeMessage(message: string) {
         this.messageSource.next(message)
     }
 

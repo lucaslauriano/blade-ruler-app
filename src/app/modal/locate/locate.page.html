@@ -35,11 +35,11 @@
     <ion-list>
         <ion-item>
             <ion-range min="-200"
-                       max="200"
+                       max="0"
                        snaps
-                       value="{ lower: number; upper: number; }"
+                       value="{{value}}"
                        step="10"
-                       ticks>
+                       >
                 <ion-icon size="small"
                           slot="start"
                           name="md-thermometer"></ion-icon>
@@ -49,6 +49,10 @@
         </ion-item>
 
     </ion-list>
+
+    <ion-button (click)="presentAlertPrompt()">
+        Simular RSSI {{ floatingValue }}
+    </ion-button>
 
     <ion-spinner name="bublles"></ion-spinner>
 </ion-content>

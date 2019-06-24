@@ -26,9 +26,11 @@
 
         </ion-buttons>
         <ion-buttons slot="primary">
-            <ion-button color="danger">
+            <ion-button color="danger"
+                        (click)="openPopover($event)">
                 <ion-icon slot="icon-only"
-                          name="more"></ion-icon>
+                          name="more">
+                </ion-icon>
             </ion-button>
         </ion-buttons>
         <ion-title>Conectar</ion-title>
@@ -39,16 +41,17 @@
 
     <ion-button (click)="scan()"
                 expand="full">
-                <ion-icon name="search"></ion-icon>
+        <ion-icon name="search"></ion-icon>
         <ion-label>Buscar Dispositivos</ion-label>
     </ion-button>
-<!-- 
+
+
+    <!-- 
     <ion-button [disabled]="!connected"
                 (click)="isConnected()">
         <ion-icon ios="ios-warning"
-                  md="md-warning"></ion-icon>
+                    md="md-warning"></ion-icon>
     </ion-button>
-
 
     <ion-button [disabled]="!connected">
         <ion-icon disabled
@@ -70,6 +73,15 @@
                 ion-button
                 icon-only>
         <ion-icon name="play"></ion-icon>
+        Iventario
+    </ion-button>
+    <ion-button [disabled]="!connected"
+                *ngIf="!inventoring"
+                (click)="sendCmdSingleTag()"
+                ion-button
+                icon-only>
+        <ion-icon name="play"></ion-icon>
+        Ler uma Tag
     </ion-button>
 
     <ion-button [disabled]="!connected"
@@ -121,17 +133,8 @@
         <ion-icon ios="ios-power"
                   md="md-power"></ion-icon>
     </ion-button>
-
-    <ion-button (click)="getBatteryLevel()"
-                ion-button
-                icon-only>
-        <ion-icon ios="ios-power"
-                  md="md-power"></ion-icon>
-    </ion-button>
-
-
-
-    <p>{{status}}</p> -->
+ -->
+    <p>{{status}}</p>
 
     <ion-card *ngIf="devices.length">
         <ion-card-header>

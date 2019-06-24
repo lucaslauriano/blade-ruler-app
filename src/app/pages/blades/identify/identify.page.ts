@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BladesService, Blades } from 'src/app/services/blades.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 
@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class IdentifyPage implements OnInit {
     public blade: Blades = {
+        id: null,
         _rfid: null,
         categorie: null,
         img: null,
@@ -25,15 +26,19 @@ export class IdentifyPage implements OnInit {
     items: Observable<any[]>;
     countItems = 0;
     private _id = null;
-
+    public totalBlades;
+    public tag;
+    
     constructor(
         private bladesService: BladesService,
         private route: ActivatedRoute,
         public afs: AngularFirestore,
+        public alertController: AlertController,
         private loadingController: LoadingController,
         private router: Router
     ) {
         this._id = this.route.snapshot.params['id'];
+       
     }
 
     async loadBlade() {
@@ -52,10 +57,12 @@ export class IdentifyPage implements OnInit {
     get(loading) {
         this.bladesService.getBlade(this._id).subscribe(res => {
             loading.dismiss();
+            
             this.blade = res;
         });
     }
 
+  
     ngOnInit() {
         if (this._id) {
             this.loadBlade()

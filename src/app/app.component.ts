@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Platform, NavController, LoadingController } from '@ionic/angular';
+import { Platform, NavController, LoadingController, AlertController } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -7,7 +7,6 @@ import { Router } from '@angular/router';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
 import { Message } from 'src/utils/message/message';
 import { BLE } from '@ionic-native/ble/ngx';
-import { DataService } from './services/data.service';
 
 @Component({
     selector: 'app-root',
@@ -24,18 +23,17 @@ import { DataService } from './services/data.service';
 
 export class AppComponent implements OnInit {
 
-    public connected: boolean = false;
+    public connected: boolean = true;
 
     public tag: string;
     public device;
-    public message: string;
 
     constructor(
         public bluetoothSerial: BluetoothSerial,
         public router: Router,
         private platform: Platform,
-        private data: DataService,
-        //private message: Message,
+        private alertController: AlertController,
+        private message: Message,
         private splashScreen: SplashScreen,
         private loadingController: LoadingController,
         private statusBar: StatusBar,
@@ -45,16 +43,16 @@ export class AppComponent implements OnInit {
         this.initializeApp();
     }
 
-    ngOnInit() {
-        this.data.currentMessage.subscribe(message => this.message = message)
-    }
-
     logOut() {
         this.afAuth.auth.signOut().then(() => {
             this.router.navigate(['/login']);
             location.reload();
 
         })
+    }
+
+    ngOnInit() {
+
     }
 
     navigate() {
@@ -103,29 +101,56 @@ export class AppComponent implements OnInit {
         });
     }
 
-    public identifyBlade() {
-
-        if (this.connected) {
-            let id = this.tag
-            this.router.navigate(['/identify',  id ]);
-        } else {
-          //  this.message.notify('Dispositivo não conectado!');
-        }
+    public identifyBlade(id) {
+        this.router.navigate(['/identify',  id ]);
     }
 
     public newBlade() {
         if (this.connected) {
             this.router.navigate(['/new-blade']);
         } else {
-           // this.message.notify('Dispositivo não conectado!');
+            // this.message.notify('Dispositivo não conectado!');
         }
+    }
+
+    async presentAlertPrompt() {
+        console.log('presentAlertPrompt')
+        const alert = await this.alertController.create({
+            header: 'Simulação: Identificar',
+            inputs: [
+                {
+                    name: 'tag',
+                    type: 'text',
+                    value: '',
+                    placeholder: 'Tag Id'
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Cancelar',
+                    role: 'cancel',
+                    cssClass: 'secondary',
+                    handler: () => {
+                        this.router.navigate(['/home']);
+                    }
+                }, {
+                    text: 'Identificar',
+                    handler: (data) => {
+                        console.log('666',data);
+                        this.identifyBlade(data.tag)
+                    }
+                }
+            ]
+        });
+
+        await alert.present();
     }
 
     public inventory() {
         if (this.connected) {
             this.router.navigate(['/inventory']);
         } else {
-           // this.message.notify('Dispositivo não conectado!');
+            // this.message.notify('Dispositivo não conectado!');
         }
     }
 

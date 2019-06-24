@@ -106,11 +106,7 @@ export class NewBladePage implements OnInit {
     }
 
     locateBlade() {
-        if (this.connected) {
-            console.log('data');
-        } else {
-            this.message.notify('Dispositivo não conectado!');
-        }
+        this.router.navigate(['/locate']);
     }
 
     loadTextNew() {

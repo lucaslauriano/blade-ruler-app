@@ -5,53 +5,58 @@
         </ion-buttons>
         <ion-title>
             Inventário
-            <!--  {{ pageTitle }} -->
         </ion-title>
-        <!--  <ion-searchbar slot="end" placeholder="Search Favorites"></ion-searchbar> -->
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-list>
-        <ng-container *ngIf="!blades || blades.length == 0">
-            <div *ngFor="let n of [0, 1, 2]"
-                 padding>
-                <ion-skeleton-text> </ion-skeleton-text>
-            </div>
-        </ng-container>
 
-        <ion-item-sliding *ngFor="let item of bladesModel">
+
+    <ion-card *ngIf="notFoundTags">
+
+        <ion-card-header>
+            <ion-card-title>Tags</ion-card-title>
+            <ion-card-subtitle>Tags encontradas</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-list>
+            <ng-container *ngIf="!blades || blades.length == 0">
+                <div *ngFor="let n of [0, 1, 2]"
+                     padding>
+                    <ion-skeleton-text> </ion-skeleton-text>
+                </div>
+            </ng-container>
+
+            <div *ngFor="let item of blades">
+                <ion-item lines="inset"
+                          button
+                          [routerLink]="['/blades', item.id]">
+                    <ion-label> {{ item.name }} - {{ item.description }} </ion-label>
+                    <ion-note color="primary"
+                              slot="end"> Id: {{ item.id }} </ion-note>
+                </ion-item>
+                <ion-item-options side="end">
+                    <ion-item-option color="danger"
+                                     (click)="removeBlade(item)">Excluir
+                    </ion-item-option>
+                </ion-item-options>
+            </div>
+
+        </ion-list>
+
+        <ion-card-header>
+            <ion-card-subtitle>Tags não encontradas</ion-card-subtitle>
+        </ion-card-header>
+        <ion-list>
             <ion-item lines="inset"
                       button
-                      [routerLink]="['/blades', item.id]">
-                <ion-label> {{ item.name }} - {{ item.description }} </ion-label>
+                      [routerLink]="['/blades', tag.id]"
+                      *ngFor="let tag of notFoundTags">
+                <ion-label> {{ tag.name }} - {{ tag.description }} </ion-label>
                 <ion-note color="primary"
-                          slot="end"> Id: {{ item.id }} </ion-note>
+                          slot="end"> Id: {{ tag.id }} </ion-note>
             </ion-item>
-            <ion-item-options side="end">
-                <ion-item-option color="danger"
-                                 (click)="removeBlade(item)">
-                    <!-- <ion-icon size="" slot="start" color="dark" name="trash"></ion-icon> -->
-                    Excluir
-                </ion-item-option>
-            </ion-item-options>
-        </ion-item-sliding>
-    </ion-list>
-    
-    <!--   
-        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-            <ion-fab-button [routerLink]="['/new-blade']">
-            <ion-icon name="add"></ion-icon>F
-            </ion-fab-button>
-        </ion-fab> 
-    -->
-</ion-content>
+        </ion-list>
 
-<ion-footer>
-    <ion-toolbar>
-        <ion-title>Total:</ion-title>
-        <ion-buttons slot="end">
-            <ion-title>{{ blades.length }}</ion-title>
-        </ion-buttons>
-    </ion-toolbar>
-</ion-footer>
+    </ion-card>
+</ion-content>
