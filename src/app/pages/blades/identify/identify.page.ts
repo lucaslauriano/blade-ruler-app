@@ -5,11 +5,15 @@ import { LoadingController, AlertController, NavController } from '@ionic/angula
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Message } from '../../../../utils/message/message';
 
 @Component({
     selector: 'app-identify',
     templateUrl: 'identify.page.html',
-    styleUrls: ['identify.page.scss']
+    styleUrls: ['identify.page.scss'],
+    providers: [
+        Message
+    ]
 })
 export class IdentifyPage implements OnInit {
     public blade: Blades = {
@@ -35,6 +39,7 @@ export class IdentifyPage implements OnInit {
         private route: ActivatedRoute,
         public afs: AngularFirestore,
         public afAuth: AngularFireAuth,
+        private message: Message,
         public alertController: AlertController,
         private loadingController: LoadingController,
         private navigation: NavController,
@@ -44,7 +49,7 @@ export class IdentifyPage implements OnInit {
         console.log('currentUser:', afAuth.auth.currentUser);
 
         //displayName
-    }   
+    }
 
     async loadBlade() {
 
@@ -87,7 +92,7 @@ export class IdentifyPage implements OnInit {
             });
     }
 
-    lockedTag() {
+    async lockedTag() {
         this.disabled !== this.disabled;
         if (this.blade.status === this.afAuth.auth.currentUser.displayName) {
             this.disabled = true;
@@ -95,12 +100,15 @@ export class IdentifyPage implements OnInit {
             this.blade.status = '';
             this.saveBlade(message);
         } else {
-            if (!this.blade.status) {
-                this.disabled = false;
-                this.blade.status = this.afAuth.auth.currentUser.displayName;
-                let message = 'Alocando TAG...';
-                this.saveBlade(message);
-            }
+            if (this.blade.status && this.blade.status !== this.afAuth.auth.currentUser.displayName) {
+                this.message.notify('Esta TAG já está alocada!');
+            } else
+                if (!this.blade.status && this.afAuth.auth.currentUser) {
+                    this.disabled = false;
+                    this.blade.status = this.afAuth.auth.currentUser.displayName;
+                    let message = 'Alocando TAG...';
+                    this.saveBlade(message);
+                }
         }
     }
 

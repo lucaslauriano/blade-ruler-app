@@ -55,8 +55,8 @@
            
           
             <ion-fab-button [disabled]="!afAuth.auth.currentUser"  (click)="lockedTag()">
-                <ion-icon *ngIf="blade.status"  name="close-circle-outline"></ion-icon>
-                <ion-icon *ngIf="!blade.status" name="checkmark-circle-outline"></ion-icon>
+                <ion-icon *ngIf="blade?.status"  name="close-circle-outline"></ion-icon>
+                <ion-icon *ngIf="!blade?.status" name="checkmark-circle-outline"></ion-icon>
             </ion-fab-button>
         </ion-fab-list>
     </ion-fab>
