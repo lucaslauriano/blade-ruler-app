@@ -13,7 +13,7 @@
     <ion-card>
         <ion-card-header>
             <ion-card-title>Nome: {{ blade.name }}</ion-card-title>
-            <ion-card-subtitle>Código RFID: #{{ blade.id }}
+            <ion-card-subtitle>Código RFID: # {{ _id }}
             </ion-card-subtitle>
         </ion-card-header>
         <ion-card-content>
@@ -49,13 +49,13 @@
             <ion-icon name="cog"></ion-icon>
         </ion-fab-button>
         <ion-fab-list side="start">
-            <ion-fab-button>
+            <ion-fab-button [routerLink]="['/blades', _id]">
                 <ion-icon name="create"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button>
+            <ion-fab-button [disabled]="!disabled" (click)="locked()" >
                 <ion-icon name="close-circle-outline"></ion-icon>
             </ion-fab-button>
-            <ion-fab-button>
+            <ion-fab-button [disabled]="disabled" (click)="locked()">
                 <ion-icon name="checkmark-circle-outline"></ion-icon>
             </ion-fab-button>
         </ion-fab-list>

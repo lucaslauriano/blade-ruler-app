@@ -28,7 +28,7 @@ export class InventoryPage implements OnInit {
     public tags: Array<any> = [];
     public status: string = '';
     public blades: Array<any> = [];
-    public storedTags: Blades[];
+    public storedTags: Array<any> = [];
     public notFoundTags: Array<any> = [];
     public pageTitle: any;
     public totalBlades: any;
@@ -108,7 +108,7 @@ export class InventoryPage implements OnInit {
     stored(inventoredTags) {
         for (let i = 0; i < this.storedTags.length; i++) {
             let bladesStored = this.storedTags[i];
-
+            console.log('bladesStored', bladesStored);
             for (let j = 0; j < inventoredTags.length; j++) {
 
                 if (bladesStored.id === inventoredTags[j]) {
