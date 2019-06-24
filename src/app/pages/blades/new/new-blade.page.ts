@@ -38,7 +38,7 @@ export class NewBladePage implements OnInit {
 
     public editingMode: boolean = false;
 
-    _id = null;
+    public _id = null;
     endpoint = 'blades';
 
     constructor(
@@ -125,6 +125,7 @@ export class NewBladePage implements OnInit {
     }
 
     add(loading) {
+        this.blade.status =  'Desalocada';
         this.bladesService.addBlade(this.blade).then(() => {
             this.savingTag()
             loading.dismiss();

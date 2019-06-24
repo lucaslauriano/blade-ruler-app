@@ -12,26 +12,32 @@
 <ion-content>
   <ion-list>
     <ng-container *ngIf="!categories || categories.length == 0">
-      <div *ngFor="let n of [0, 1, 2]" padding>
+      <div *ngFor="let n of [0, 1, 2]"
+           padding>
         <ion-skeleton-text> </ion-skeleton-text>
       </div>
     </ng-container>
 
     <ion-item-sliding *ngFor="let item of categories">
-      <ion-item lines="inset" button [routerLink]="['/categories', item.id]">
+      <ion-item lines="inset"
+                button
+                [routerLink]="['/categories', item.id]">
         <ion-label> {{ item.name }} - {{ item.description }} </ion-label>
-        <ion-note color="primary" slot="end"> Id: {{ item.id }} </ion-note>
+        <ion-note color="primary"
+                  slot="end"> Id: {{ item.id }} </ion-note>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="remove(item)">
-          <!-- <ion-icon size="" slot="start" color="dark" name="trash"></ion-icon> -->
+        <ion-item-option color="danger"
+                         (click)="remove(item)">
           Excluir
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
   </ion-list>
 
-  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab vertical="bottom"
+           horizontal="end"
+           slot="fixed">
     <ion-fab-button [routerLink]="['/new-categorie']">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
