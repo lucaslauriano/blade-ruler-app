@@ -62,7 +62,7 @@ export class InventoryPage implements OnInit {
     async presentAlertPrompt() {
         console.log('presentAlertPrompt')
         const alert = await this.alertController.create({
-            header: 'Iventário Simulado',
+            header: 'Inventário Simulado',
             inputs: [
                 {
                     name: 'tagsData',

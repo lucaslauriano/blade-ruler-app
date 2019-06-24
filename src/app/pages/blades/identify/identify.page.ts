@@ -12,8 +12,6 @@ import { Observable } from 'rxjs';
 })
 export class IdentifyPage implements OnInit {
     public blade: Blades = {
-        id: null,
-        _rfid: null,
         categorie: null,
         img: null,
         montage: null,

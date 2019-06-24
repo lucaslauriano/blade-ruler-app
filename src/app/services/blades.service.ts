@@ -7,8 +7,6 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 export interface Blades {
-    id: any;
-  _rfid: string;
   categorie: string;
   img: string;
   montage: string;

@@ -3,8 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, NavController } from '@ionic/angular';
 import { Message } from 'src/utils/message/message';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
-import { ModalController } from '@ionic/angular';
-///import { ModalPage } from '../modal/modal.page';
 
 import {
     Blades,
@@ -29,8 +27,6 @@ export class NewBladePage implements OnInit {
     public connected: boolean = false;
 
     public blade: Blades = {
-        id: null,
-        _rfid: null,
         categorie: null,
         img: null,
         montage: null,
@@ -47,7 +43,6 @@ export class NewBladePage implements OnInit {
 
     constructor(
         private bladesService: BladesService,
-        private bluetoothSerial: BluetoothSerial,
         private route: ActivatedRoute,
         public router: Router,
         public message: Message,
