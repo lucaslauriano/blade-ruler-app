@@ -61,7 +61,7 @@ export class NewBladePage implements OnInit {
         const loading = await this.loadingController.create({
             message: 'Carregando...',
             spinner: 'crescent',
-            duration: 2000
+            duration: 4000
         });
 
         await loading.present();
@@ -78,7 +78,7 @@ export class NewBladePage implements OnInit {
         const loading = await this.loadingController.create({
             message: 'Salvando...',
             spinner: 'crescent',
-            duration: 2000
+            duration: 4000
         });
 
         await loading.present();

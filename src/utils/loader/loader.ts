@@ -22,7 +22,7 @@ export class Loader {
         const loading = await this.loadingController.create({
             message: message,
             spinner: 'crescent',
-            duration: 2000
+            duration: 4000
         });
         ("loader criado");
 
