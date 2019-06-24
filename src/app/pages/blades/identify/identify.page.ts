@@ -41,14 +41,10 @@ export class IdentifyPage implements OnInit {
         private router: Router
     ) {
         this._id = this.route.snapshot.params['id'];
-
-        if (this.blade.status === 'Alocada') {
-            this.disabled = true;
-        } else {
-            this.disabled = false;
-        }
         console.log('currentUser:', afAuth.auth.currentUser);
-    }
+
+        //displayName
+    }   
 
     async loadBlade() {
 
@@ -93,16 +89,18 @@ export class IdentifyPage implements OnInit {
 
     lockedTag() {
         this.disabled !== this.disabled;
-        if (this.blade.status === 'Alocada') {
+        if (this.blade.status === this.afAuth.auth.currentUser.displayName) {
             this.disabled = true;
             let message = 'Desalocando TAG...';
-            this.blade.status = 'Desalocada';
+            this.blade.status = '';
             this.saveBlade(message);
         } else {
-            this.disabled = false;
-            this.blade.status = 'Alocada';
-            let message = 'Alocando TAG...';
-            this.saveBlade(message);
+            if (!this.blade.status) {
+                this.disabled = false;
+                this.blade.status = this.afAuth.auth.currentUser.displayName;
+                let message = 'Alocando TAG...';
+                this.saveBlade(message);
+            }
         }
     }
 

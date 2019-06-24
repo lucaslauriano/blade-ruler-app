@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { LoadingController, NavController } from '@ionic/angular';
 import { Message } from 'src/utils/message/message';
 import { BluetoothSerial } from '@ionic-native/bluetooth-serial/ngx';
+import { CategoriesService, Categories } from '../../../services/categories.service';
 
 import {
     Blades,
@@ -40,10 +41,12 @@ export class NewBladePage implements OnInit {
 
     public _id = null;
     endpoint = 'blades';
+    public categories: Array<any> = [];
 
     constructor(
         private bladesService: BladesService,
         private route: ActivatedRoute,
+        private categoriesService: CategoriesService,
         public router: Router,
         public message: Message,
         private loadingController: LoadingController,
@@ -54,6 +57,9 @@ export class NewBladePage implements OnInit {
         this._id = this.route.snapshot.params['id'];
         this.init()
 
+        this.categoriesService.getCategories().subscribe(res => {
+            this.categories = res;
+        });
     }
 
     async loadBlade() {
@@ -71,7 +77,6 @@ export class NewBladePage implements OnInit {
 
     savingTag() {
         console.log('Serializando');
-
     }
 
     async saveBlade() {
@@ -125,9 +130,8 @@ export class NewBladePage implements OnInit {
     }
 
     add(loading) {
-        this.blade.status =  'Desalocada';
         this.bladesService.addBlade(this.blade).then(() => {
-            this.savingTag()
+            this.savingTag();
             loading.dismiss();
             this.navigation.navigateBack(this.endpoint);
         });
